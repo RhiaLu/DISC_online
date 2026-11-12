@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DISC 個人行為模式評量</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F7; --sheet:#FFFFFF; --ink:#1E2433; --muted:#5B6478; --line:#D9DEE7; --soft:#E9ECF2;
+  --rose:#C8456A; --rose-l:#F4D5DE; --cobalt:#2F5DB3; --cobalt-l:#D6E0F3;
+  --d:#23848A; --i:#C8456A; --s:#3A63B8; --c:#B26F0E;
+  --serif:"Noto Serif TC",serif; --sans:"Noto Sans TC",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--stick,0px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:6px}
+
+.wrap{display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;max-width:1160px;margin:0 auto;padding:40px 24px 120px}
+
+/* rail */
+.rail{position:sticky;top:24px;align-self:start}
+.rail h1{font-family:var(--serif);font-weight:900;font-size:26px;line-height:1.25;margin:0 0 6px;letter-spacing:.01em}
+.rail .lede{color:var(--muted);font-size:14px;margin:0 0 24px}
+.rail ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.rail li a{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:baseline;padding:8px 0 8px 16px;margin-left:-2px;border-left:2px solid transparent;color:var(--muted);text-decoration:none;font-size:14px;line-height:1.4}
+.rail li a:hover{color:var(--ink)}
+.rail li a.active{border-left-color:var(--ink);color:var(--ink);font-weight:500}
+.rail li a .n{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}
+.rail li a.done .n{color:var(--d);font-weight:700}
+.rail .tools{margin-top:28px;display:flex;flex-direction:column;gap:8px}
+.save{font-size:12px;color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--sheet);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer;text-align:left}
+.btn:hover{border-color:var(--ink)}
+.btn.danger{color:var(--rose)}
+
+/* sections */
+main{min-width:0}
+.part{background:var(--sheet);border-radius:14px;padding:40px 44px 44px;margin-bottom:28px;box-shadow:0 1px 0 var(--line)}
+.part > header{margin-bottom:28px}
+.part .step{font-size:13px;color:var(--muted);margin:0 0 4px}
+.part h2{font-family:var(--serif);font-weight:900;font-size:30px;line-height:1.3;margin:0 0 10px}
+.part .how{margin:0;color:var(--muted);max-width:40em}
+h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:36px 0 12px}
+.note{font-size:13px;color:var(--muted);margin:8px 0 0}
+
+/* DISC questions: number per option */
+.q{border:0;padding:0;margin:0 0 30px;min-width:0}
+.q legend{font-weight:500;padding:0;margin-bottom:10px;display:flex;gap:10px}
+.q legend .qn{font-variant-numeric:tabular-nums;color:var(--muted);min-width:1.6em}
+.opts{display:grid;gap:6px;padding-left:calc(1.6em + 10px)}
+.nopt{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:6px 6px 6px 14px;border:1px solid var(--line);border-radius:10px;transition:background .15s,border-color .15s}
+.nopt .on{color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px}
+.nopt .tx{line-height:1.55}
+.nopt.has{border-color:var(--ink);background:var(--soft)}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+.stepper button{width:34px;height:34px;border:0;background:none;cursor:pointer;font-size:18px;line-height:1;color:var(--muted)}
+.stepper button:hover:not(:disabled){background:var(--soft);color:var(--ink)}
+.stepper button:disabled{opacity:.3;cursor:default}
+.stepper input{width:40px;height:34px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);text-align:center;font-weight:700;font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield;background:#fff}
+.stepper input::-webkit-inner-spin-button,.stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.qsum{font-size:13px;color:var(--muted);margin:6px 0 0;padding-left:calc(1.6em + 10px);font-variant-numeric:tabular-nums}
+.qsum.full{color:var(--d);font-weight:500}
+
+/* score tables */
+.scores{width:100%;border-collapse:collapse;margin-top:8px;font-variant-numeric:tabular-nums}
+.scores th,.scores td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:center}
+.scores th:first-child,.scores td:first-child{text-align:left;font-weight:500}
+.scores thead th{font-family:var(--serif);font-size:22px;font-weight:900;border-bottom:2px solid var(--ink)}
+.scores td{font-size:20px}
+.scores tr.total td{font-weight:700;background:var(--soft)}
+.scores tr.total td:first-child{font-size:16px}
+
+/* bipolar scale */
+.scale-head,.bp,.subtotal{display:grid;grid-template-columns:2em minmax(5.5em,1fr) repeat(4,minmax(44px,64px)) minmax(5.5em,1fr);align-items:center}
+.scale-head{font-size:12px;color:var(--muted);position:sticky;top:var(--stick,0px);background:var(--sheet);z-index:2;padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.scale-head span{text-align:center}
+.scale-head .l{color:var(--rose)} .scale-head .r{color:var(--cobalt)}
+.bp{padding:4px 0;min-width:0}
+.bp .no{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bp .wl{padding-right:10px;transition:color .15s}
+.bp .wr{text-align:right;padding-left:10px;transition:color .15s}
+.bp label{position:relative;display:block;height:34px;cursor:pointer}
+.bp input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.bp label i{position:absolute;inset:6px 2px;border-radius:6px;background:var(--soft);transition:background .15s}
+.bp label:nth-of-type(1) i{border-radius:17px 6px 6px 17px}
+.bp label:nth-of-type(4) i{border-radius:6px 17px 17px 6px}
+.bp label:nth-of-type(2){margin-right:6px}
+.bp label:nth-of-type(3){margin-left:6px}
+.bp label:hover i{background:#DDE2EA}
+.bp label:nth-of-type(1) input:checked + i{background:var(--rose)}
+.bp label:nth-of-type(2) input:checked + i{background:var(--rose-l);box-shadow:inset 0 0 0 2px var(--rose)}
+.bp label:nth-of-type(3) input:checked + i{background:var(--cobalt-l);box-shadow:inset 0 0 0 2px var(--cobalt)}
+.bp label:nth-of-type(4) input:checked + i{background:var(--cobalt)}
+.bp input:focus-visible + i{outline:3px solid var(--ink);outline-offset:1px}
+.bp[data-v="0"] .wl,.bp[data-v="1"] .wl{color:var(--rose);font-weight:500}
+.bp[data-v="2"] .wr,.bp[data-v="3"] .wr{color:var(--cobalt);font-weight:500}
+.subtotal{padding:10px 0;font-size:14px;border-top:2px solid var(--ink);margin-top:4px}
+.subtotal output{text-align:center;font-variant-numeric:tabular-nums;font-weight:700}
+.subtotal .sum{text-align:right;font-weight:500}
+.subtotal .sum output{font-size:20px;margin-left:6px}
+.total-row{display:flex;flex-wrap:wrap;gap:24px;align-items:center;margin-top:24px}
+.total-row .t{font-weight:500}
+.total-row .t output{font-family:var(--serif);font-weight:900;font-size:32px;margin-left:8px}
+.total-row .t small{color:var(--muted);font-weight:400;margin-left:6px}
+.curve{width:260px;height:auto}
+
+/* quadrant map */
+.map{margin-top:12px}
+.map .grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,minmax(92px,auto));border:2px solid var(--ink);position:relative;font-size:13px;line-height:1.45}
+.map .grid > div{display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 4px}
+.map .grid .tl{grid-column:1/3;grid-row:1/3;background:#FBEFF3}
+.map .grid .tr{grid-column:3/5;grid-row:1/3;background:#EFF3FA}
+.map .grid .bl{grid-column:1/3;grid-row:3/5;background:#F8EEF1}
+.map .grid .br{grid-column:3/5;grid-row:3/5;background:#EAF0F8}
+.map .grid .vline{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--ink);padding:0}
+.map .grid .hline{position:absolute;top:50%;left:0;right:0;height:2px;background:var(--ink);padding:0}
+.map .grid .box{position:absolute;left:25%;right:25%;top:25%;bottom:25%;border:1.5px dashed var(--muted);padding:0;pointer-events:none}
+.map .job{position:absolute;width:25%;height:25%}
+.map .tag{position:absolute;font-size:12px;font-weight:700;background:#F6D36B;padding:1px 6px;border-radius:3px}
+.map .axis{display:flex;justify-content:center;gap:40px;font-size:13px;color:var(--muted);margin:6px 0}
+.map .axis b{color:var(--cobalt);font-weight:700}
+.map .side{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.map .side .v{writing-mode:vertical-rl;font-size:13px;color:var(--muted);letter-spacing:.1em}
+.map .side .v b{color:var(--cobalt)}
+.tick{position:absolute;font-size:11px;color:var(--muted);background:#fff;padding:0 3px;line-height:1.3;transform:translate(-50%,-50%)}
+.dot{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--rose);border:3px solid #fff;box-shadow:0 0 0 2px var(--ink);transform:translate(-50%,-50%);display:none;z-index:3}
+.dot::after{content:attr(data-label);position:absolute;left:22px;top:-6px;white-space:nowrap;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px}
+.coordline{margin:14px 0 0;font-weight:500}
+.coordline output{font-family:var(--serif);font-weight:900;font-size:22px}
+
+/* OUTCOME grid — follows the paper table */
+.ot-wrap{overflow-x:auto;margin:0 -8px;padding:4px 8px 8px}
+table.ot{border-collapse:collapse;width:100%;min-width:700px;table-layout:fixed;font-size:14px}
+.ot col.c-no{width:34px}.ot col.c-name{width:84px}.ot col.c{width:40px}.ot col.c-end{width:110px}
+.ot th,.ot td{border:1px solid #AEB6C6;padding:0;height:46px}
+.ot .sub th{background:#E8893A;color:#fff;font-weight:700;letter-spacing:.15em;text-align:center}
+.ot .pri{display:block;width:100%;height:100%;border:0;background:transparent;text-align:center;font-weight:700;font-size:16px;font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield;padding:0}
+.ot .pri::-webkit-inner-spin-button,.ot .pri::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.ot .pri:focus{outline:3px solid var(--cobalt);outline-offset:-3px;background:#fff}
+.ot .pri.dup{color:var(--rose)}
+.ot .pri.miss{background:#FCEEF2;box-shadow:inset 0 0 0 2px var(--rose)}
+.ot .sub td{background:#FBE3CC;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.ot .heads th{vertical-align:top;padding:0 0 8px;background:#fff;font-weight:500;height:auto;text-align:center}
+.ot .heads .num{display:block;color:var(--muted);font-size:12px;border-bottom:1px solid #AEB6C6;padding:4px 0;margin-bottom:6px}
+.ot .heads .vn{writing-mode:vertical-rl;letter-spacing:.2em;display:inline-block;line-height:1.2}
+.ot .blank{border:0;background:none}
+.ot .heads th.blank,.ot .sub td.blank{background:none}
+.ot tbody th{font-weight:500;background:#fff;text-align:left;padding:0 8px;white-space:nowrap}
+.ot tbody th.no{text-align:center;color:var(--muted);font-weight:400;padding:0}
+.ot td.diag{background:linear-gradient(to bottom right,#80889A calc(50% - 1px),#1E2433 50%,#80889A calc(50% + 1px))}
+.ot td.desc{border:0;border-bottom:1px solid #AEB6C6;padding:0 12px;color:var(--muted);font-size:13px;line-height:1.4}
+.ot tr:first-child td.desc{border-top:1px solid #AEB6C6}
+.ot td.cell button{display:block;width:100%;height:100%;border:0;background:#fff;cursor:pointer;font-weight:700;font-size:16px;font-variant-numeric:tabular-nums;color:var(--cobalt);border-radius:0}
+.ot td.cell button:hover{background:var(--soft)}
+.ot td.cell button.filled{background:#EAF0FA}
+.ot td.cell button.open{outline:3px solid var(--cobalt);outline-offset:-3px}
+.ot .stick1{position:sticky;left:0;z-index:2}
+.ot .stick2{position:sticky;left:34px;z-index:2;box-shadow:1px 0 0 #AEB6C6}
+.ot tbody tr.hl th{background:#F3F6FC}
+.ot .heads th.hl{background:#F3F6FC}
+.pop{position:absolute;z-index:40;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px rgba(30,36,51,.2);padding:12px;width:230px;display:none}
+.pop.open{display:block}
+.pop p{margin:0 0 8px;font-size:13px;color:var(--muted)}
+.pop .ch{display:grid;grid-template-columns:1.6em 1fr;width:100%;text-align:left;padding:8px 10px;margin-bottom:6px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+.pop .ch b{font-variant-numeric:tabular-nums}
+.pop .ch:hover{border-color:var(--ink)}
+.pop .ch.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pop .clr{font-size:13px;color:var(--muted);background:none;border:0;cursor:pointer;padding:4px 2px}
+.rank{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:12px;padding:0;list-style:none}
+.rank li{padding:12px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;min-height:64px;background:#F5F7FB}
+.rank li:nth-child(6n){border-right:0}
+.rank li:nth-last-child(-n+6){border-bottom:0}
+.rank li small{display:block;color:var(--muted);font-size:12px}
+.rank li b{display:block;font-weight:500}
+.rank li .cnt{font-family:var(--serif);font-weight:900;font-size:20px;color:var(--ink)}
+.rank li.top{background:#fff;box-shadow:inset 0 0 0 3px var(--rose);position:relative}
+.rank li.top .cnt{color:var(--rose)}
+.rank li .place{position:absolute;bottom:12px;right:8px;background:var(--rose);color:#fff;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px}
+
+/* satisfaction */
+.facet{border-top:1px solid var(--line);padding:20px 0}
+.facet:first-of-type{border-top:0;padding-top:0}
+.facet .hd{display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:12px}
+.facet .hd b{font-family:var(--serif);font-size:20px;font-weight:600;display:block}
+.facet .hd small{color:var(--muted);font-size:14px}
+.facet select{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff}
+.lik{display:grid;grid-template-columns:7em 1fr;align-items:center;gap:10px;margin:6px 0}
+.lik .ll{font-size:14px;color:var(--muted)}
+.lik .seg{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.lik label{position:relative;border-right:1px solid var(--line)}
+.lik label:last-child{border-right:0}
+.lik input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.lik span{display:block;text-align:center;font-size:13px;padding:8px 2px;cursor:pointer}
+.lik input:checked + span{background:var(--cobalt);color:#fff}
+.lik.future input:checked + span{background:var(--d)}
+.lik input:focus-visible + span{outline:3px solid var(--ink);outline-offset:-3px}
+.field{display:block;margin-top:16px}
+.field > span{display:block;font-weight:500;margin-bottom:6px}
+textarea,.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;resize:vertical}
+textarea{min-height:76px;line-height:1.6}
+textarea:focus,.field input:focus,.field select:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 3px var(--cobalt-l)}
+.warn{color:var(--rose);font-size:13px;min-height:1.2em;margin:4px 0 0}
+
+/* dreams */
+.dreams{display:grid;grid-template-columns:10em repeat(3,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.dreams > *{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.dreams .h{background:var(--soft);padding:10px 12px;font-size:14px;font-weight:500;text-align:center;line-height:1.4}
+.dreams .h small{display:block;color:var(--muted);font-weight:400}
+.dreams .rh{background:#FBF1E3;padding:12px;font-weight:500;font-size:15px;display:flex;align-items:center}
+.dreams textarea{border:0;border-radius:0;min-height:96px;height:100%}
+.dreams .lastcol{border-right:0}
+.dreams .lastrow{border-bottom:0}
+.motto{font-family:var(--serif);font-weight:600;font-size:20px;text-align:center;margin:28px 0 0;color:var(--muted)}
+
+/* disc types */
+.types{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:14px;overflow:hidden}
+.type{padding:22px 24px}
+.type .big{font-family:var(--serif);font-weight:900;font-size:56px;line-height:1;float:right;opacity:.9}
+.type h4{margin:0 0 2px;font-size:20px}
+.type p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.type ul{margin:0;padding-left:1.1em;font-size:14px}
+.type ul.minus{margin-top:8px;color:var(--muted)}
+.type.d{background:#E3F1F1}.type.d .big,.type.d h4{color:var(--d)}
+.type.i{background:#F9E3EA}.type.i .big,.type.i h4{color:var(--i)}
+.type.c{background:#FBEFD9}.type.c .big,.type.c h4{color:var(--c)}
+.type.s{background:#E2E9F6}.type.s .big,.type.s h4{color:var(--s)}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px}
+.coordbox{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--soft);font-variant-numeric:tabular-nums}
+.divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px;margin:36px 0 4px}
+.divider::before,.divider::after{content:"";flex:1;border-top:1px dashed #AEB6C6}
+
+/* unanswered */
+.q.miss legend{color:var(--rose)}
+.qsum.miss{color:var(--rose);font-weight:500}
+.bp.miss .no,.bp.miss .wl,.bp.miss .wr{color:var(--rose);font-weight:500}
+.bp.miss label i{background:#FBE7EC}
+.lik.miss .ll{color:var(--rose);font-weight:500}
+.lik.miss .seg{border-color:var(--rose)}
+.facet select.miss{border-color:var(--rose);color:var(--rose)}
+.ot td.cell button.miss{background:#FCEEF2;box-shadow:inset 0 0 0 1.5px var(--rose)}
+.missline{color:var(--rose);font-weight:500;font-size:14px;margin:16px 0 0;line-height:1.9}
+.missline:empty{display:none}
+.missline .jump{border:0;background:none;color:var(--rose);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0 2px;font-weight:500}
+#rankNote.miss{color:var(--rose);font-weight:500}
+.rail li a.miss .n{color:var(--rose);font-weight:700}
+.finish{background:var(--sheet);border-radius:14px;padding:28px 44px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.finish p{margin:0;font-weight:500}
+.finish p.bad{color:var(--rose)} .finish p.good{color:var(--d)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);padding:10px 18px;font-weight:500}
+.btn.primary:hover{background:#343C50}
+
+/* report (offscreen) */
+.btn:disabled{opacity:.6;cursor:progress}
+#rp-host{position:fixed;left:-12000px;top:0;width:794px;z-index:-1}
+.rp-page{width:794px;height:1123px;padding:52px 52px 0;background:#fff;color:#1E2433;font-family:var(--sans);font-size:13px;line-height:1.6;position:relative;overflow:hidden}
+.rp-blk{padding-bottom:22px}
+.rp-foot{position:absolute;left:52px;right:52px;bottom:22px;display:flex;justify-content:space-between;font-size:11px;color:#5B6478;border-top:1px solid #D9DEE7;padding-top:8px}
+.rp-head h1{font-family:var(--serif);font-weight:900;font-size:28px;margin:0 0 16px}
+.rp-meta{font-size:11px;color:#5B6478;margin:8px 0 0}
+.rp-warn{color:#C8456A;font-weight:500;margin:10px 0 0}
+.rp-empty{color:#9AA3B5}
+.rp-page h2{font-family:var(--serif);font-weight:900;font-size:19px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #1E2433}
+.rp-page h3{font-size:14px;margin:0 0 6px}
+.rp-info{width:100%;border-collapse:collapse}
+.rp-info th{width:70px;text-align:left;color:#5B6478;font-weight:500;padding:6px 0;border-bottom:1px solid #E9ECF2}
+.rp-info td{padding:6px 12px 6px 0;border-bottom:1px solid #E9ECF2;font-weight:500}
+.rp-tbl{width:100%;border-collapse:collapse;margin-bottom:10px}
+.rp-tbl th,.rp-tbl td{border:1px solid #D9DEE7;padding:6px 8px;text-align:left;vertical-align:top}
+.rp-tbl thead th{background:#F2F4F7;font-weight:700}
+.rp-num th,.rp-num td{text-align:center;font-variant-numeric:tabular-nums}
+.rp-num th:first-child,.rp-num td:first-child{text-align:left}
+.rp-num thead th{font-family:var(--serif);font-size:17px}
+.rp-num tr.tot td{font-weight:700;background:#F2F4F7}
+.rp-bars{display:grid;gap:6px;margin:6px 0 10px}
+.rp-bars .bar{display:grid;grid-template-columns:110px 1fr 40px;align-items:center;gap:10px}
+.rp-bars .l{font-weight:700}
+.rp-bars .track{height:14px;background:#E9ECF2;border-radius:7px;overflow:hidden;display:block}
+.rp-bars .track i{display:block;height:100%;border-radius:7px}
+.rp-bars b{text-align:right;font-variant-numeric:tabular-nums}
+.rp-types{display:grid;gap:8px}
+.rp-type{border-left:4px solid;padding:6px 12px;background:#F7F8FA}
+.rp-type h3{margin:0 0 2px;font-size:15px}.rp-type h3 small{color:#5B6478;font-weight:400}
+.rp-type p{margin:0}.rp-type p.m{color:#5B6478}
+.rp-row{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.rp-big{font-size:15px;margin:0}.rp-big b{font-family:var(--serif);font-size:30px;font-weight:900;margin:0 4px}
+.rp-big small{color:#5B6478;font-size:12px}
+.rp-curve svg{width:260px;height:auto}
+.rp-line{margin:0 0 8px}.rp-line b{font-size:16px;margin-right:6px}
+.rp-map .map .side .v{writing-mode:horizontal-tb;width:13px;font-size:11px;line-height:1.25;word-break:break-all;letter-spacing:0}
+.rp-map .map{margin:0}.rp-map .map .grid{grid-template-rows:repeat(4,70px);font-size:11px}
+.rp-two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:10px}
+.rp-ol{list-style:none;margin:0;padding:0}
+.rp-ol li{display:flex;gap:10px;align-items:baseline;padding:5px 0;border-bottom:1px solid #E9ECF2;font-weight:500}
+.rp-ol li > span:first-child{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:#C8456A;color:#fff;font-size:12px;flex:none}
+.rp-ol li em{font-style:normal;color:#5B6478;margin-left:auto}
+.rp-cnt{table-layout:fixed}
+.rp-cnt th,.rp-cnt td{text-align:center;padding:4px 2px}
+.rp-cnt td.nm{font-size:11px}
+.rp-cnt td.top{background:#FCEEF2;color:#C8456A;font-weight:700;border:2px solid #C8456A}
+.rp-dl{margin:8px 0 0;display:grid;grid-template-columns:150px 1fr;gap:6px 12px}
+.rp-dl dt{color:#5B6478}.rp-dl dd{margin:0;font-weight:500}
+.rp-dream td,.rp-dream th{width:26%}.rp-dream td.rh,.rp-dream th:first-child{width:22%;background:#FBF1E3;font-weight:500}
+.rp-dream th small{display:block;font-weight:400;color:#5B6478}
+
+/* dialog + toast */
+.modal{position:fixed;inset:0;background:rgba(30,36,51,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.open{display:flex}
+.modal .box{background:#fff;border-radius:14px;padding:24px;max-width:380px}
+.modal .box p{margin:0 0 18px}
+.modal .row{display:flex;gap:8px;justify-content:flex-end}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60}
+.toast.show{opacity:1}
+
+/* mobile */
+.mobile-tools{display:none;gap:8px;flex-wrap:wrap;margin:-8px 0 20px}
+@media (max-width:900px){
+  .finish{padding:22px 18px}
+  .wrap{grid-template-columns:minmax(0,1fr);gap:0;padding:0 0 100px}
+  .rail{position:sticky;top:0;z-index:10;background:var(--paper);padding:12px 12px 0;min-width:0}
+  .rail h1{font-size:18px;margin-bottom:4px}
+  .rail .lede{display:none}
+  .rail ol{display:flex;overflow-x:auto;border-left:0;border-bottom:2px solid var(--line);gap:4px;scrollbar-width:none}
+  .rail ol::-webkit-scrollbar{display:none}
+  .rail li a{display:flex;white-space:nowrap;padding:8px 10px;border-left:0;margin:0 0 -2px;border-bottom:2px solid transparent}
+  .rail li a.active{border-bottom-color:var(--ink)}
+  .rail .tools{display:none}
+  main{padding:16px 12px}
+  .part{padding:28px 18px 32px;border-radius:12px}
+  .part h2{font-size:24px}
+  .mobile-tools{display:flex}
+}
+@media (max-width:560px){
+  .scale-head,.bp,.subtotal{grid-template-columns:1.4em minmax(4em,1fr) repeat(4,minmax(28px,34px)) minmax(4em,1fr)}
+  .bp{font-size:14px}
+  .bp .wl{padding-right:6px}.bp .wr{padding-left:6px}
+  .bp label:nth-of-type(2){margin-right:3px}.bp label:nth-of-type(3){margin-left:3px}
+  .opts,.qsum{padding-left:0}
+  .nopt{grid-template-columns:1fr auto;padding-left:12px}
+  .nopt .on{display:none}
+  .scores td{font-size:17px}
+  .rank{grid-template-columns:repeat(3,1fr)}
+  .rank li:nth-child(6n){border-right:1px solid var(--line)}
+  .rank li:nth-child(3n){border-right:0}
+  .rank li:nth-last-child(-n+6){border-bottom:1px solid var(--line)}
+  .rank li:nth-last-child(-n+3){border-bottom:0}
+  .lik{grid-template-columns:1fr}
+  .dreams{display:block;border:0}
+  .dreams .h{display:none}
+  .dreams > *{border:0}
+  .dreams .rh{background:none;padding:18px 0 6px;font-family:var(--serif);font-size:18px}
+  .dreams label.cell{display:block;margin-bottom:8px}
+  .dreams label.cell::before{content:attr(data-when);display:block;font-size:13px;color:var(--muted);margin-bottom:2px}
+  .dreams textarea{border:1px solid var(--line);border-radius:10px;min-height:70px}
+  .types{grid-template-columns:1fr}
+  .form2{grid-template-columns:1fr}
+  .map .grid{font-size:11px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="rail" aria-label="評量各部分">
+    <h1>DISC 個人行為模式評量</h1>
+    <p class="lede">沒有標準答案，請依照你平常的行為作答。</p>
+    <ol id="nav"></ol>
+    <div class="tools">
+      <span class="save" id="saveState">作答會自動儲存在這個瀏覽器</span>
+      <button class="btn" type="button" data-act="pdf">下載 PDF 報告</button>
+      <button class="btn" type="button" data-act="check">檢查未作答的題目</button>
+      <button class="btn" type="button" data-act="copy">複製全部作答</button>
+      <button class="btn danger" type="button" data-act="reset">清除全部作答</button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="mobile-tools">
+      <button class="btn" type="button" data-act="pdf">下載 PDF 報告</button>
+      <button class="btn" type="button" data-act="check">檢查未作答的題目</button>
+      <button class="btn" type="button" data-act="copy">複製全部作答</button>
+      <button class="btn danger" type="button" data-act="reset">清除全部作答</button>
+    </div>
+
+    <section class="part" id="part1">
+      <header>
+        <p class="step">第 1 部分，共 8 部分</p>
+        <h2>行為模式評量（一）</h2>
+        <p class="how">依照你「平常的行為」，在符合的選項填上分數。每題加總最多 <b class="capv"></b> 分，不必每個選項都填。</p>
+      </header>
+      <div id="disc1"></div>
+      <p class="missline" id="miss1"></p>
+      <h3>第一頁分數</h3>
+      <table class="scores" aria-live="polite">
+        <thead><tr><th></th><th style="color:var(--d)">D</th><th style="color:var(--i)">I</th><th style="color:var(--s)">S</th><th style="color:var(--c)">C</th></tr></thead>
+        <tbody><tr><td>行為模式（一）</td><td id="p1D">0</td><td id="p1I">0</td><td id="p1S">0</td><td id="p1C">0</td></tr></tbody>
+      </table>
+    </section>
+
+    <section class="part" id="part2">
+      <header>
+        <p class="step">第 2 部分，共 8 部分</p>
+        <h2>行為模式評量（二）</h2>
+        <p class="how">在最像你的句子填上分數。每題加總最多 <b class="capv"></b> 分，不必每個選項都填。</p>
+      </header>
+      <div id="disc2"></div>
+      <p class="missline" id="miss2"></p>
+      <h3>計分</h3>
+      <table class="scores" aria-live="polite">
+        <thead><tr><th></th><th style="color:var(--d)">D</th><th style="color:var(--i)">I</th><th style="color:var(--s)">S</th><th style="color:var(--c)">C</th></tr></thead>
+        <tbody>
+          <tr><td>行為模式（一）</td><td id="q1D">0</td><td id="q1I">0</td><td id="q1S">0</td><td id="q1C">0</td></tr>
+          <tr><td>行為模式（二）</td><td id="p2D">0</td><td id="p2I">0</td><td id="p2S">0</td><td id="p2C">0</td></tr>
+          <tr class="total"><td>一、二頁合計</td><td id="tD">0</td><td id="tI">0</td><td id="tS">0</td><td id="tC">0</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="part" id="part3">
+      <header>
+        <p class="step">第 3 部分，共 8 部分</p>
+        <h2>適性評量第一階段</h2>
+        <p class="how">每題單選。先判斷你的個性偏向左邊還是右邊，再選擇「強」或「弱」。</p>
+      </header>
+      <div class="bpgroup">
+        <div class="scale-head" aria-hidden="true"><span></span><span></span><span class="l">強</span><span class="l">弱</span><span class="r">弱</span><span class="r">強</span><span></span></div>
+        <div id="apt1"></div>
+      </div>
+      <p class="missline" id="miss3"></p>
+      <div class="total-row">
+        <span class="t">總計<output id="apt1Total">0</output><small id="apt1Done"></small></span>
+        <svg class="curve" viewBox="0 0 260 74" aria-hidden="true">
+          <path d="M10 58 C70 58 90 50 110 30 C125 12 135 8 150 8 C170 8 180 30 195 44 C210 56 230 58 250 58" fill="none" stroke="#1E2433" stroke-width="1.5"/>
+          <line x1="0" y1="62" x2="260" y2="62" stroke="#AEB6C6"/>
+          <g id="curveMark" style="display:none"><line x1="0" y1="2" x2="0" y2="62" stroke="#C8456A" stroke-width="2.5"/><circle cx="0" cy="2" r="4" fill="#C8456A"/></g>
+          <text x="95" y="73" font-size="11" fill="#5B6478" text-anchor="middle">45</text>
+          <text x="185" y="73" font-size="11" fill="#5B6478" text-anchor="middle">65</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="part" id="part4">
+      <header>
+        <p class="step">第 4 部分，共 8 部分</p>
+        <h2>適性評量第二階段</h2>
+        <p class="how">每題單選。先判斷你的個性偏向左邊還是右邊，再選擇「強」或「弱」。兩組都填完後，座標會標在下方的圖上。</p>
+      </header>
+      <h3>橫坐標</h3>
+      <div class="bpgroup">
+        <div class="scale-head" aria-hidden="true"><span></span><span></span><span class="l">強</span><span class="l">弱</span><span class="r">弱</span><span class="r">強</span><span></span></div>
+        <div id="apt2h"></div>
+        <div class="subtotal"><span></span><span>小計</span><output id="h0">0</output><output id="h1">0</output><output id="h2">0</output><output id="h3">0</output><span class="sum">合計<output id="hSum">0</output></span></div>
+      </div>
+
+      <h3>縱坐標</h3>
+      <div class="bpgroup">
+        <div class="scale-head" aria-hidden="true"><span></span><span></span><span class="l">強</span><span class="l">弱</span><span class="r">弱</span><span class="r">強</span><span></span></div>
+        <div id="apt2v"></div>
+        <div class="subtotal"><span></span><span>小計</span><output id="v0">0</output><output id="v1">0</output><output id="v2">0</output><output id="v3">0</output><span class="sum">合計<output id="vSum">0</output></span></div>
+      </div>
+
+      <h3>職涯座標圖</h3>
+      <div class="map">
+        <div class="axis"><span>不重形式</span><b>感性型</b><span>重創造力</span></div>
+        <div class="side">
+          <span class="v">挑戰性工作／<b>掌控・熱情</b>／管理性工作</span>
+          <div class="grid" id="mapGrid"><div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div></div>
+          <span class="v">例行性工作／<b>內向・含蓄</b>／分析性工作</span>
+        </div>
+        <div class="axis"><span>重工作形式</span><b>理性型</b><span>善於管理</span></div>
+      </div>
+      <p class="missline" id="miss4"></p>
+      <p class="coordline">你的座標（橫, 縱）：<output id="coordText">—</output></p>
+      <p class="note" id="coordNote"></p>
+    </section>
+
+    <section class="part" id="part5">
+      <header>
+        <p class="step">第 5 部分，共 8 部分</p>
+        <h2>工作因子 OUTCOME 表</h2>
+        <p class="how">先在最上方一列，選出你心中最重要的三個工作動機，分別填上 1、2、3（1 最重要），其他格子留空。接著每一行與每一列交叉比較：點交叉的空格，選出在工作中對你比較重要的那一個，格子會填入它的編號。</p>
+      </header>
+      <div class="ot-wrap" id="otWrap"></div>
+      <p class="warn" id="priWarn" aria-live="polite"></p>
+      <h3>排列順序</h3>
+      <p class="note" style="margin:0 0 4px">每一格是該編號在上方表格中出現的次數。全部填完後，次數最多的前三名會標出來。</p>
+      <ol class="rank" id="rank"></ol>
+      <p class="note" id="rankNote"></p>
+    </section>
+
+    <section class="part" id="part6">
+      <header>
+        <p class="step">第 6 部分，共 8 部分</p>
+        <h2>新圓夢思考模式</h2>
+        <p class="how">人生有二分之一的時間在工作上。用工作的五大面向，檢視你目前與未來的工作是否符合你的期望，值得你繼續努力。</p>
+      </header>
+      <div id="facets"></div>
+      <p class="missline" id="miss6"></p>
+      <p class="warn" id="rankWarn" aria-live="polite"></p>
+      <label class="field"><span>以上五項，哪一項是你目前選擇工作的首要條件？</span>
+        <select data-k="p6.first" id="firstSel"><option value="">請選擇</option></select></label>
+      <label class="field"><span>為什麼？</span><textarea data-k="p6.why"></textarea></label>
+      <h3>現階段工作</h3>
+      <label class="field"><span>最滿意的點</span><textarea data-k="p6.good"></textarea></label>
+      <label class="field"><span>不滿意的點</span><textarea data-k="p6.bad"></textarea></label>
+    </section>
+
+    <section class="part" id="part7">
+      <header>
+        <p class="step">第 7 部分，共 8 部分</p>
+        <h2>我的夢想 &amp; 目標</h2>
+        <p class="how">開始想想未來的目標是什麼？有什麼事是一定要完成的？</p>
+      </header>
+      <div class="dreams" id="dreams"></div>
+      <p class="motto">沒有被夢想拋棄的人，只有被人拋棄的夢想。</p>
+    </section>
+
+    <section class="part" id="part8">
+      <header>
+        <p class="step">第 8 部分，共 8 部分</p>
+        <h2>DISC 四種類型</h2>
+        <p class="how">對照四種行為風格的特質，以及最後的基本資料與計分欄。</p>
+      </header>
+      <div class="types">
+        <div class="type d"><span class="big">D</span><h4>掌控型</h4><p>Dominance</p>
+          <ul><li>喜歡挑戰自己及他人</li><li>行動力強</li><li>結果導向</li><li>坦率</li><li>有自信</li></ul>
+          <ul class="minus"><li>缺乏耐性</li><li>不敏感</li></ul></div>
+        <div class="type i"><span class="big">I</span><h4>影響型</h4><p>Influence</p>
+          <ul><li>熱情</li><li>行動強</li><li>善交際</li><li>健談</li><li>樂觀</li></ul>
+          <ul class="minus"><li>衝動</li><li>缺乏跟進</li></ul></div>
+        <div class="type c"><span class="big">C</span><h4>嚴謹型</h4><p>Conscientiousness</p>
+          <ul><li>精準</li><li>善於分析</li><li>重視數據</li><li>冷靜</li><li>安靜</li></ul>
+          <ul class="minus"><li>過於挑惕</li><li>過度分析</li></ul></div>
+        <div class="type s"><span class="big">S</span><h4>穩健型</h4><p>Steadiness</p>
+          <ul><li>沉著冷靜</li><li>有耐心</li><li>善於傾聽</li><li>重視和諧</li><li>謙遜</li></ul>
+          <ul class="minus"><li>過分遷就他人</li><li>不敢冒險</li></ul></div>
+      </div>
+
+      <div class="divider">以下由計分者填寫</div>
+      <div class="form2">
+        <label class="field"><span>外</span><input data-k="p8.out"></label>
+        <label class="field"><span>潛力</span><input data-k="p8.potential"></label>
+        <label class="field"><span>內</span><input data-k="p8.in"></label>
+        <div class="field"><span>座標（第二階段自動帶入）</span><div class="coordbox"><output id="coord8">—</output></div></div>
+      </div>
+
+      <div class="divider">基本資料</div>
+      <div class="form2">
+        <label class="field"><span>受測者</span><input data-k="p8.name" autocomplete="name"></label>
+        <label class="field"><span>介紹人</span><input data-k="p8.ref"></label>
+        <label class="field"><span>年齡</span><input data-k="p8.age" inputmode="numeric"></label>
+        <label class="field"><span>測驗日</span><input data-k="p8.date" type="date"></label>
+      </div>
+    </section>
+
+    <div class="finish"><button class="btn primary" type="button" data-act="pdf">下載 PDF 報告</button><button class="btn" type="button" data-act="check">檢查未作答的題目</button><p id="checkResult" aria-live="polite"></p></div>
+  </main>
+</div>
+
+<div class="pop" id="pop" role="dialog" aria-label="選出比較重要的工作動機"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mtxt">
+  <div class="box"><p id="mtxt">要清除全部作答嗎？清除後無法復原。</p>
+    <div class="row"><button class="btn" type="button" id="mNo">保留作答</button><button class="btn danger" type="button" id="mYes">清除全部作答</button></div></div>
+</div>
+<div class="modal" id="pdfModal" role="dialog" aria-modal="true" aria-labelledby="pdfMsg">
+  <div class="box"><p id="pdfMsg"></p>
+    <div class="row"><button class="btn" type="button" id="pdfBack">回去作答</button><button class="btn primary" type="button" id="pdfGo">直接下載報告</button></div></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- settings ---------- */
+const CAP = 4;                       // 行為模式：每題加總上限
+const LETTERS = ["D","I","S","C"];   // 選項 1–4 對應 D、I、S、C
+
+/* ---------- content ---------- */
+const DISC = [
+ ["當你和朋友一起用餐時，在選擇餐廳或是吃什麼時，你常是：",["決定者：意見不同時，通常都是決定者","氣氛製造者：吃什麼，很能帶動情緒氣氛","附和者：隨便，沒意見","提供意見者：常去否定別人之提議，自己卻又沒有意見，不做決定"]],
+ ["當你買衣服時，你是：",["不易受售貨員之影響，心中自有定見","售貨員的親切及好的感受，常會促進你的購買","找熟悉的店購買","品質與價錢是否成比例，價錢是否合理"]],
+ ["你的消費習慣是：",["找到要買的東西，付錢走人","很隨意的逛，不特定買什麼","有一定的消費習慣時間，不太喜歡變化","較注意東西好不好，較有成本概念"]],
+ ["你的朋友，以一句話來形容你，他們會說：",["蠻「鴨霸」的","熱情洋溢","溫和斯文","要求完美"]],
+ ["你自認哪一種形容，最能表現你的特色：",["果敢的，能接受挑戰","生動活潑，不拘禮","愛傾聽，喜歡穩定","處事謹慎小心，重數據分析"]],
+ ["你覺得做事的重點，應該是：",["What，做什麼，重結果","Who，誰來做，重感受（過程）","How，怎麼做，重執行","Why，為何做，重品質"]],
+ ["與同事有意見衝突（或不同）時，你是：",["說服對方，聽從自己的意見","找其他同事或上司的意見，尋求支持","退讓，以和為貴","與衝突者協調，找尋最好的意見"]],
+ ["什麼樣的工作環境，最能鼓舞你：",["能讓你決定事情，具領導地位的","同事相處愉快，處處受歡迎","穩定中求發展","講品質，重效率的工作"]],
+ ["以下的溝通方式，哪一項最符合你：",["直接了當，較權威式的","表情豐富，肢體語言較多","先聽聽別人意見，而後溫和的表達自己的意見","不露感情的，禮多於情，愛分析，較冷靜"]],
+ ["在每一次會議中或公司決議提案時，你所扮演的角色為何：",["據理力爭","協調者","贊同多數","分析所有提案以供參考"]],
+ ["",["我做事一向以具體、短期內能達到目標，決定快速，立即得到結果","在本性上我喜歡與人交往，各式各樣的人都行，包括陌生人","我不喜歡強出頭，寧可當候補","我是一個自我約束、很守紀律的人，凡事依既定目標行事"]],
+ ["",["我喜歡有變化，有力激烈的、競爭的，是個可接受挑戰的人","我喜歡社交，也喜歡款待人","我喜歡成為小組的一份子，固守一般性的程序","我會花很多時間去研究事與人"]],
+ ["",["我喜歡依照自己的方式做事，不在乎別人對我的觀感，只要成功","有人和我意見不一致時，我會很難過（困擾）","我知道做些改變是有必要的，但即使如此我還是覺得少冒險來的好","我對自己及他人的期望很高，這些都是為了符合我的高標準"]],
+ ["",["我善於處理棘手的問題","我是個很熱心的人，我喜歡與人工作","我喜歡聽而不喜歡說話，我一開口都說的很委婉溫和","處理事我較不動感情，事就是事，不把感情牽扯進來，也較少與人閒聊"]],
+ ["",["我喜歡有競爭，有競爭才能把潛力完全發揮出來","我較感性，與人相處，處事較不注意細節","我是個天生的組員，順著群眾","對事我喜歡去研究，講求證據與保證"]],
+ ["",["我喜歡能力與權威，這都是我想要的","我有時候很情緒化","附和者：隨便，沒意見","提供意見者：常去否定別人之提議，自己卻又沒有意見，不做決定"]],
+ ["",["對直接關係的環境，我有傾向喜歡去掌握及支配他人","在團體中我喜歡打成一片，活活潑潑有氣氛，有感情的相處","我較遵守傳統步驟做事，不喜歡有大變化","在沒有掌握事實的真相，更多資料前我寧可保持現狀"]],
+ ["",["我在與人溝通時，直接了當的說，不喜歡兜圈子","我喜歡幫助別人，相親相愛","我不喜歡多變化的環境而要穩定安全的生活方式","凡事我要求的是準確無誤，講求的是高品質，高標準的處事原則"]],
+ ["",["我不喜歡別人逗我開心，不喜歡太多話的人","我喜歡參加團體活動，因為與多數人在一起很好","對事情我沒有太多要求與意見，喜歡靜靜的有耐心的做","我做事要有一套經過計劃設計的標準作業程序來引導作業方向"]],
+ ["",["我討厭別人告訴我事情該如何做，因為我自有一套，我不喜歡被別人支配","我是個生氣勃勃外向的人，別人愛與我一起工作，因為別人跟我在一起工作，我會激起熱心，我就是有那個能耐","我喜歡獨處，與人生活在一起會注意盡量不去打擾他人家居生活","我很少加入別人的閒聊中，當話題有趣時，我會找更多的資料，小心的進行外交策略"]]
+];
+const APT1 = [["幽默","嚴肅"],["與世無爭","好勝"],["喜歡熱鬧","享受孤獨"],["淡泊名利","強烈企圖心"],["希望被肯定","隨緣"],["穩定就好","想創業"],["喜好冒險","喜好保守"],["不喜歡被打擾","主動交友"],["勤勞型","清閒型"],["嫉惡如仇","好相處"],["好動","好靜"],["冷漠","熱情"],["慷慨","節儉"],["不善表達於外","讚美別人"],["執著","富彈性"],["不善言詞","說服力"],["注重形象","不重外表"],["委屈求全","敢要求別人"],["自我激勵","需要鼓勵"],["大而化之","注意小節"],["謙虛有禮","率直純真"],["喜歡獨自工作","領導經驗豐富"],["活潑","文靜"],["獨善其身","善解人意"],["合群","喜好獨行"]];
+const APT2H = [["愛說話","文靜"],["負責","隨意"],["勇敢","羞怯"],["專注","鬆懈"],["活潑","深思"],["勇於挑戰","接受現實"],["直接","拐彎抹角"],["固執己見","猶豫不定"],["勇於對抗","樂於支持"],["說得多","問得少"]];
+const APT2V = [["不重形式","注重形式"],["熱情","冷酷"],["富幻想性","注重事實"],["以人為中心","以事為中心"],["容易激動","較為冷靜"],["容易親近","保持距離"],["無問不答","守口如瓶"],["外向","內向"],["自然的","做作的"],["衝動的","理智的"]];
+const FACTORS = [["獨立性","依照自己的意願運作自己的業務，獨立管理，成為自己的老闆"],["受肯定","您善盡職守表現優良，能得到別人讚賞，並公開表揚"],["成就感","您克服了阻礙困難，成功達成目標後帶給您的滿足"],["休閒時間","您可以依自己的意願自由的運用時間，並獲得樂趣"],["權力","可掌控自己和他人命運，並擁有主導的權利"],["聲望","同事的尊重，並認為您是十分出眾的人物"],["金錢","工作所帶來的財務收入"],["壓力","自我期許與要求提高表現"],["自尊","自我價值與能力，即自我肯定"],["家庭時間","與家人相處時間與品質"],["安全感","工作確定性，穩定可掌控"],["個人成長","能讓自己變有能力更好"]];
+const FACETS = [["合理報酬","你付出的時間心力能得到應得的報酬嗎？"],["晉升機會","晉升全憑自己的努力，管道透明，掌握在自己手裡！"],["個人成長","公司提供學習課程、出國旅遊、追求高品質生活。"],["產業前途","熱門行業、成長率高，不受景氣影響。"],["工作價值","能幫助別人也能成就自己，肯定自我存在價值。"]];
+const LIK = ["很滿意","滿意","普通","不滿意","很不滿意"];
+const DREAM_ROWS = ["想要買的或想要擁有的","我想要去做的事（為自己或他人）","我要成為怎樣的人","我要學習什麼","我的收入目標"];
+const DREAM_COLS = [["短期目標","1 年內"],["中期目標","2～5 年內"],["長期目標","6 年後"]];
+const PARTS = ["行為模式（一）","行為模式（二）","適性評量第一階段","適性評量第二階段","工作因子 OUTCOME 表","新圓夢思考模式","我的夢想 & 目標","DISC 四型與基本資料"];
+
+/* ---------- scoring rules ---------- */
+// 行為模式：選項 1–4 的分數分別加到 D、I、S、C
+function discScore(from, to){
+  const r = {D:0,I:0,S:0,C:0};
+  for (let q=from; q<=to; q++) for (let o=1;o<=4;o++) r[LETTERS[o-1]] += Number(S[`disc.${q}.${o}`]||0);
+  return r;
+}
+// v：0 左強、1 左弱、2 右弱、3 右強（由左到右）
+const apt1Points = (n, v) => n % 2 === 1 ? v + 1 : 4 - v;   // 單數題 1,2,3,4；雙數題 4,3,2,1
+const hPoints = v => v + 1;                                 // 橫坐標 1,2,3,4
+const vPoints = v => v + 1;                                 // 縱坐標 1,2,3,4
+
+/* ---------- state ---------- */
+const KEY = "disc-assessment-v2";
+let S = {};
+try { S = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { S = {}; }
+let saveTimer;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    try { localStorage.setItem(KEY, JSON.stringify(S)); document.getElementById("saveState").textContent = "已自動儲存在這個瀏覽器"; }
+    catch(e){ document.getElementById("saveState").textContent = "這個瀏覽器無法自動儲存，請先複製作答"; }
+  }, 250);
+}
+function set(k, v){ if (v===undefined || v==="" ) delete S[k]; else S[k]=v; save(); update(); }
+const esc = s => s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- render ---------- */
+document.querySelectorAll(".capv").forEach(e=>e.textContent=CAP);
+
+function renderDisc(el, from, to){
+  let h = "";
+  for (let n=from; n<=to; n++){
+    const [stem, opts] = DISC[n-1];
+    h += `<fieldset class="q" id="q${n}"><legend><span class="qn">${n}.</span><span>${stem ? esc(stem) : "在最像你的句子填上分數"}</span></legend><div class="opts">`;
+    opts.forEach((o,i)=>{
+      const k = `disc.${n}.${i+1}`;
+      h += `<div class="nopt" data-opt="${k}"><span class="on">(${i+1})</span><span class="tx">${esc(o)}</span>
+        <span class="stepper"><button type="button" data-step="-1" data-for="${k}" aria-label="第 ${n} 題選項 ${i+1} 減 1">−</button><input type="number" min="0" max="${CAP}" step="1" inputmode="numeric" data-num="${k}" aria-label="第 ${n} 題選項 ${i+1} 的分數"><button type="button" data-step="1" data-for="${k}" aria-label="第 ${n} 題選項 ${i+1} 加 1">+</button></span></div>`;
+    });
+    h += `</div><p class="qsum" id="qs${n}"></p></fieldset>`;
+  }
+  el.innerHTML = h;
+}
+function renderBipolar(el, list, prefix){
+  el.innerHTML = list.map(([l,r],i)=>{
+    const id = `${prefix}.${i+1}`, nm = id.replace(".","_");
+    const lab = ["強","弱","弱","強"], word=[l,l,r,r];
+    return `<div class="bp" id="bp-${nm}" data-bp="${id}" role="radiogroup" aria-label="${l} 或 ${r}"><span class="no">${i+1}</span><span class="wl">${l}</span>`+
+      [0,1,2,3].map(v=>`<label><input type="radio" name="${nm}" value="${v}" data-k="${id}" aria-label="${word[v]}，${lab[v]}"><i></i></label>`).join("")+
+      `<span class="wr">${r}</span></div>`;
+  }).join("");
+}
+function renderMap(){
+  const jobs = [
+    ["導遊<br>領隊","藝術家","廚師","家庭主婦<br>行政管理"],
+    ["超級業務員","可培養業務員","內勤、秘書<br>公務員",""],
+    ["業務<br>高階主管","中階主管<br>一般主管","會計","銀行界"],
+    ["企業家","高階主管<br>老闆","工程師、博士<br>醫師、律師","研究人員<br>專業人員"]];
+  let h = "";
+  jobs.forEach((row,r)=>row.forEach((t,c)=>{
+    h += `<div class="job" style="left:${c*25}%;top:${r*25}%;color:${c<2?"#B23A5C":"#2F4F8F"}">${t}</div>`;
+  }));
+  h += `<div class="vline"></div><div class="hline"></div><div class="box"></div>`;
+  h += `<span class="tag" style="left:6px;top:6px">自我挑戰</span><span class="tag" style="right:6px;top:6px">支援與服務</span><span class="tag" style="left:6px;bottom:6px">管理自律</span><span class="tag" style="right:6px;bottom:6px">專業研究</span>`;
+  [10,17,25,33,40].forEach(n=>{ const pos=(n-10)/30*100;
+    h += `<span class="tick" style="left:${pos}%;top:50%">${n}</span>`;
+    if (n!==25) h += `<span class="tick" style="left:50%;top:${pos}%">${n}</span>`; });
+  h += `<span class="dot" id="mapDot"></span>`;
+  document.getElementById("mapGrid").insertAdjacentHTML("beforeend", h);
+}
+function renderOT(){
+  let h = `<table class="ot"><colgroup><col class="c-no"><col class="c-name">${'<col class="c">'.repeat(12)}<col class="c-end"></colgroup><thead>`;
+  h += `<tr class="sub"><th colspan="2" class="stick1">優先順序</th>${FACTORS.map(([n],i)=>`<td><input class="pri" type="number" min="1" max="3" step="1" inputmode="numeric" data-k="p5.pri.${i+1}" aria-label="${n} 的優先順序（只填 1、2、3）"></td>`).join("")}<td class="blank"></td></tr>`;
+  h += `<tr class="heads"><th colspan="2" class="stick1"></th>${FACTORS.map(([n],i)=>`<th scope="col" data-col="${i+1}"><span class="num">${i+1}</span><span class="vn">${n}</span></th>`).join("")}<th class="blank"></th></tr></thead><tbody>`;
+  FACTORS.forEach(([n,d],ri)=>{
+    const i = ri+1;
+    h += `<tr data-row="${i}"><th class="no stick1">${i}</th><th scope="row" class="stick2">${n}</th>`;
+    for (let j=1;j<i;j++) h += `<td class="cell"><button type="button" data-a="${j}" data-b="${i}" aria-haspopup="dialog"></button></td>`;
+    h += `<td class="diag" aria-hidden="true"></td><td class="desc" colspan="${13-i}">${d}</td></tr>`;
+  });
+  h += `</tbody></table>`;
+  document.getElementById("otWrap").innerHTML = h;
+}
+function renderFacets(){
+  const opts = `<option value="">排序</option>` + [1,2,3,4,5].map(n=>`<option value="${n}">第 ${n}</option>`).join("");
+  document.getElementById("facets").innerHTML = FACETS.map(([n,d],i)=>{
+    const id=i+1;
+    const lik = (which,label,cls)=>`<div class="lik ${cls}" data-lik="p6.${id}.${which}" role="radiogroup" aria-label="${n}，${label}"><span class="ll">${label}</span><div class="seg">`+
+      LIK.map((t,v)=>`<label><input type="radio" name="f${id}${which}" value="${v+1}" data-k="p6.${id}.${which}"><span>${t}</span></label>`).join("")+`</div></div>`;
+    return `<div class="facet" id="facet${id}"><div class="hd"><div><b>${n}</b><small>${d}</small></div>
+      <select data-k="p6.${id}.rank" aria-label="${n} 的排序">${opts}</select></div>
+      ${lik("now","現階段滿意度","")}${lik("future","未來理想期許","future")}</div>`;
+  }).join("");
+  document.getElementById("firstSel").insertAdjacentHTML("beforeend", FACETS.map(([n])=>`<option>${n}</option>`).join(""));
+}
+function renderDreams(){
+  let h = `<div class="h">目標</div>` + DREAM_COLS.map(([a,b],c)=>`<div class="h ${c==2?"lastcol":""}">${a}<small>${b}</small></div>`).join("");
+  DREAM_ROWS.forEach((r,ri)=>{
+    const last = ri==DREAM_ROWS.length-1 ? "lastrow" : "";
+    h += `<div class="rh ${last}">${r}</div>`;
+    DREAM_COLS.forEach(([a,b],c)=>{
+      h += `<label class="cell ${c==2?"lastcol":""} ${last}" data-when="${a}（${b}）"><textarea data-k="p7.${ri+1}.${c+1}" aria-label="${r}，${a}"></textarea></label>`;
+    });
+  });
+  document.getElementById("dreams").innerHTML = h;
+}
+function renderNav(){
+  document.getElementById("nav").innerHTML = PARTS.map((p,i)=>`<li><a href="#part${i+1}"><span>${i+1}　${p}</span><span class="n" id="n${i+1}"></span></a></li>`).join("");
+}
+
+renderNav();
+renderDisc(document.getElementById("disc1"),1,10);
+renderDisc(document.getElementById("disc2"),11,20);
+renderBipolar(document.getElementById("apt1"), APT1, "a1");
+renderBipolar(document.getElementById("apt2h"), APT2H, "a2h");
+renderBipolar(document.getElementById("apt2v"), APT2V, "a2v");
+renderMap(); renderOT(); renderFacets(); renderDreams();
+const links = [...document.querySelectorAll("#nav a")];
+
+/* ---------- behaviour inputs ---------- */
+const qOf = k => k.split(".")[1];
+const qSum = (q, except) => { let s=0; for(let o=1;o<=4;o++){ const k=`disc.${q}.${o}`; if(k!==except) s+=Number(S[k]||0);} return s; };
+function setNum(k, raw){
+  let v = raw==="" ? 0 : Math.floor(Number(raw));
+  if (!isFinite(v) || v<0) v = 0;
+  const room = CAP - qSum(qOf(k), k);
+  if (v > room){ v = room; toast(`每題加總最多 ${CAP} 分`); }
+  set(k, v>0 ? v : undefined);
+  const el = document.querySelector(`[data-num="${k}"]`);
+  if (el && document.activeElement!==el) el.value = v>0 ? v : "";
+  else if (el && raw!=="" && Number(raw)!==v) el.value = v>0 ? v : "";
+}
+
+/* ---------- bind ---------- */
+function hydrate(){
+  document.querySelectorAll("[data-k]").forEach(el=>{
+    const v = S[el.dataset.k];
+    if (el.type==="radio") el.checked = v!==undefined && String(v)===el.value;
+    else el.value = v ?? "";
+  });
+  document.querySelectorAll("[data-num]").forEach(el=>{ const v=S[el.dataset.num]; el.value = v ? v : ""; });
+}
+document.addEventListener("change", e=>{
+  const el = e.target;
+  if (el.dataset && el.dataset.num){ setNum(el.dataset.num, el.value); el.value = S[el.dataset.num]||""; return; }
+  if (!el.dataset || !el.dataset.k) return;
+  if (el.type==="radio") set(el.dataset.k, Number(el.value));
+  else if (el.tagName==="SELECT") set(el.dataset.k, el.value);
+});
+document.addEventListener("input", e=>{
+  const el = e.target;
+  if (el.dataset && el.dataset.num){ setNum(el.dataset.num, el.value); return; }
+  if (!el.dataset || !el.dataset.k) return;
+  if (el.tagName==="TEXTAREA" || (el.tagName==="INPUT" && el.type!=="radio")) set(el.dataset.k, el.value);
+});
+document.addEventListener("click", e=>{
+  const b = e.target.closest("[data-step]"); if (!b) return;
+  const k = b.dataset.for, cur = Number(S[k]||0), nv = cur + Number(b.dataset.step);
+  setNum(k, String(Math.max(0,nv)));
+  document.querySelector(`[data-num="${k}"]`).value = S[k]||"";
+});
+
+/* ---------- OUTCOME popover ---------- */
+const pop = document.getElementById("pop");
+let popBtn = null;
+function openPop(btn){
+  closePop();
+  popBtn = btn; btn.classList.add("open");
+  const a = +btn.dataset.a, b = +btn.dataset.b, cur = S[`pair.${a}-${b}`];
+  const row = btn.closest("tr"); row.classList.add("hl");
+  document.querySelector(`.ot .heads th[data-col="${a}"]`).classList.add("hl");
+  pop.innerHTML = `<p>哪一個對你比較重要？</p>` +
+    [b,a].map(n=>`<button type="button" class="ch ${cur===n?"sel":""}" data-pick="${n}"><b>${n}</b><span>${FACTORS[n-1][0]}</span></button>`).join("") +
+    (cur ? `<button type="button" class="clr" data-pick="0">清除這一格</button>` : "");
+  pop.classList.add("open");
+  const r = btn.getBoundingClientRect(), w = pop.offsetWidth;
+  let left = r.left + window.scrollX + r.width/2 - w/2;
+  left = Math.max(window.scrollX + 8, Math.min(left, window.scrollX + document.documentElement.clientWidth - w - 8));
+  let top = r.bottom + window.scrollY + 6;
+  if (r.bottom + pop.offsetHeight + 12 > window.innerHeight) top = r.top + window.scrollY - pop.offsetHeight - 6;
+  pop.style.left = left+"px"; pop.style.top = top+"px";
+  pop.querySelector(".ch").focus();
+}
+function closePop(refocus){
+  if (!popBtn) return;
+  popBtn.classList.remove("open");
+  document.querySelectorAll(".ot .hl").forEach(x=>x.classList.remove("hl"));
+  pop.classList.remove("open");
+  if (refocus) popBtn.focus();
+  popBtn = null;
+}
+document.getElementById("otWrap").addEventListener("click", e=>{
+  const btn = e.target.closest("button[data-a]"); if (!btn) return;
+  e.stopPropagation();
+  popBtn===btn ? closePop() : openPop(btn);
+});
+pop.addEventListener("click", e=>{
+  const p = e.target.closest("[data-pick]"); if (!p || !popBtn) return;
+  e.stopPropagation();
+  const k = `pair.${popBtn.dataset.a}-${popBtn.dataset.b}`, v = +p.dataset.pick;
+  set(k, v || undefined);
+  closePop(true);
+});
+document.addEventListener("click", e=>{ if (popBtn && !pop.contains(e.target)) closePop(); });
+document.addEventListener("keydown", e=>{ if (e.key==="Escape" && popBtn) closePop(true); });
+window.addEventListener("resize", ()=>closePop());
+document.getElementById("otWrap").addEventListener("scroll", ()=>closePop());
+
+/* ---------- live update ---------- */
+function bpVals(prefix, n){ const out=[]; for(let i=1;i<=n;i++) out.push(S[`${prefix}.${i}`]); return out; }
+
+function update(){
+  // DISC options
+  document.querySelectorAll("[data-opt]").forEach(row=>{
+    const k=row.dataset.opt, v=Number(S[k]||0), room=CAP-qSum(qOf(k));
+    row.classList.toggle("has", v>0);
+    row.querySelector('[data-step="-1"]').disabled = v<=0;
+    row.querySelector('[data-step="1"]').disabled = room<=0;
+  });
+  let ans1=0, ans2=0;
+  for (let q=1;q<=20;q++){
+    const s=qSum(q), el=document.getElementById("qs"+q);
+    el.textContent = `已填 ${s} / ${CAP} 分`; el.classList.toggle("full", s===CAP);
+    if (s>0) q<=10 ? ans1++ : ans2++;
+  }
+  const s1 = discScore(1,10), s2 = discScore(11,20);
+  LETTERS.forEach(L=>{
+    document.getElementById("p1"+L).textContent = s1[L];
+    document.getElementById("q1"+L).textContent = s1[L];
+    document.getElementById("p2"+L).textContent = s2[L];
+    document.getElementById("t"+L).textContent  = s1[L]+s2[L];
+  });
+
+  // bipolar highlight
+  document.querySelectorAll(".bp").forEach(f=>{ const v=S[f.dataset.bp]; f.dataset.v = v===undefined ? "" : v; });
+
+  // stage 1
+  const a1 = bpVals("a1",25); let t1=0, d1=0;
+  a1.forEach((v,i)=>{ if(v!==undefined){ t1+=apt1Points(i+1,v); d1++; } });
+  document.getElementById("apt1Total").textContent = t1;
+  document.getElementById("apt1Done").textContent = d1===25 ? "" : `（已答 ${d1} / 25 題）`;
+  const mk = document.getElementById("curveMark");
+  if (d1===25){ const x=Math.max(4,Math.min(256, 95+(t1-45)*4.5)); mk.setAttribute("transform",`translate(${x},0)`); mk.style.display=""; }
+  else mk.style.display="none";
+
+  // stage 2
+  const H = bpVals("a2h",10), V = bpVals("a2v",10);
+  const hc=[0,0,0,0], vc=[0,0,0,0];
+  H.forEach(v=>{ if(v!==undefined) hc[v]+=hPoints(v); });
+  V.forEach(v=>{ if(v!==undefined) vc[v]+=vPoints(v); });
+  hc.forEach((n,j)=>document.getElementById("h"+j).textContent=n);
+  vc.forEach((n,j)=>document.getElementById("v"+j).textContent=n);
+  const hs=hc.reduce((a,b)=>a+b,0), vs=vc.reduce((a,b)=>a+b,0);
+  document.getElementById("hSum").textContent=hs; document.getElementById("vSum").textContent=vs;
+  const hDone=H.filter(v=>v!==undefined).length, vDone=V.filter(v=>v!==undefined).length;
+  const dot=document.getElementById("mapDot");
+  if (hDone===10 && vDone===10){
+    dot.style.display="block"; dot.style.left=((hs-10)/30*100)+"%"; dot.style.top=((vs-10)/30*100)+"%";
+    dot.dataset.label=`(${hs}, ${vs})`;
+    document.getElementById("coordText").textContent=`(${hs}, ${vs})`;
+    document.getElementById("coord8").textContent=`(${hs}, ${vs})`;
+    document.getElementById("coordNote").textContent="橫坐標合計對應左右位置，縱坐標合計對應上下位置（上方 10、下方 40）。";
+  } else {
+    dot.style.display="none";
+    document.getElementById("coordText").textContent="—";
+    document.getElementById("coord8").textContent="—";
+    document.getElementById("coordNote").textContent=`橫坐標已答 ${hDone} / 10、縱坐標已答 ${vDone} / 10，兩組都填完後會標出座標。`;
+  }
+
+  // OUTCOME grid
+  const tally = Array(13).fill(0); let done=0;
+  document.querySelectorAll("#otWrap button[data-a]").forEach(b=>{
+    const a=+b.dataset.a, c=+b.dataset.b, v=S[`pair.${a}-${c}`];
+    b.textContent = v || ""; b.classList.toggle("filled", !!v);
+    b.setAttribute("aria-label", `${FACTORS[c-1][0]} 與 ${FACTORS[a-1][0]}：${v ? "選了 "+v+" "+FACTORS[v-1][0] : "未填"}`);
+    if (v){ tally[v]++; done++; }
+  });
+  OT_TALLY = tally;
+  // 名次：次數由多到少，同次數同名次
+  const placeOf = c => 1 + FACTORS.filter((_,j)=>tally[j+1]>c).length;
+  let tied = false;
+  document.getElementById("rank").innerHTML = FACTORS.map(([n],i)=>{
+    const c = tally[i+1], place = placeOf(c), top = done===66 && c>0 && place<=3;
+    if (top && FACTORS.some((_,j)=>j!==i && tally[j+1]===c)) tied = true;
+    return `<li class="${top?"top":""}"><small>${i+1}　${n}</small><span class="cnt">${c}</span> <small style="display:inline">個</small>${top?`<span class="place">第 ${place} 名</span>`:""}</li>`;
+  }).join("");
+  document.getElementById("rankNote").textContent = done===66
+    ? (tied ? "統計完成。有動機的次數相同，所以並列同一名次。" : "統計完成。")
+    : `還有 ${66-done} 格沒填，全部填完後會標出前三名。`;
+  // priority row
+  const pri = FACTORS.map((_,i)=>S[`p5.pri.${i+1}`]).map(v=>v===undefined||v===""?null:Number(v));
+  const bad = pri.filter(v=>v!==null && !(Number.isInteger(v) && v>=1 && v<=3));
+  const seen = {}; pri.forEach(v=>{ if(v!==null) seen[v]=(seen[v]||0)+1; });
+  document.querySelectorAll(".ot .pri").forEach((el,i)=>el.classList.toggle("dup", pri[i]!==null && (seen[pri[i]]>1 || bad.includes(pri[i]))));
+  const msgs=[];
+  if (bad.length) msgs.push("最上方只能填 1、2、3。");
+  if (Object.values(seen).some(n=>n>1)) msgs.push("1、2、3 每個數字只能用一次。");
+  document.getElementById("priWarn").textContent = msgs.join("");
+  const priDone = [1,2,3].filter(n=>pri.includes(n)).length;
+  PRI_LACK = [1,2,3].filter(n=>!pri.includes(n));
+
+  // facet rank duplicates
+  const ranks = [1,2,3,4,5].map(i=>S[`p6.${i}.rank`]).filter(Boolean);
+  document.getElementById("rankWarn").textContent = new Set(ranks).size!==ranks.length ? "排序有重複的名次，每個名次只能給一個面向。" : "";
+
+  // unanswered
+  markMissing();
+
+  // progress
+  const p6 = [1,2,3,4,5].reduce((s,i)=>s+(S[`p6.${i}.now`]?1:0)+(S[`p6.${i}.future`]?1:0)+(S[`p6.${i}.rank`]?1:0),0);
+  let p7=0; for(let r=1;r<=5;r++) for(let c=1;c<=3;c++) if((S[`p7.${r}.${c}`]||"").trim()) p7++;
+  const p8 = ["name","age","ref","date"].filter(k=>(S["p8."+k]||"").trim()).length;
+  [[ans1,10],[ans2,10],[d1,25],[hDone+vDone,20],[done+priDone,69],[p6,15],[p7,15],[p8,4]].forEach(([a,b],i)=>{
+    const el=document.getElementById("n"+(i+1)); el.textContent=`${a}/${b}`;
+    el.parentElement.classList.toggle("done", a===b);
+  });
+}
+
+/* ---------- unanswered ---------- */
+let checkMode = false, missTotal = 0, OT_TALLY = Array(13).fill(0), PRI_LACK = [1,2,3];
+function flagGroup(items){
+  let last=-1; items.forEach((it,i)=>{ if(it.ok) last=i; });
+  return items.filter((it,i)=>{
+    const show = !it.ok && (checkMode || i<last);
+    it.els.forEach(e=>e.classList.toggle("miss", show));
+    return show;
+  });
+}
+function missLine(id, list){
+  document.getElementById(id).innerHTML = list.length
+    ? `尚未作答：${list.map(it=>`<button type="button" class="jump" data-jump="${it.id}">${it.label}</button>`).join("、")}`
+    : "";
+}
+function markMissing(){
+  let total = 0;
+  [[1,10,"miss1"],[11,20,"miss2"]].forEach(([a,b,id])=>{
+    const items=[]; for(let q=a;q<=b;q++){
+      items.push({ok:qSum(q)>0, id:"q"+q, label:`第 ${q} 題`, els:[document.getElementById("q"+q), document.getElementById("qs"+q)]});
+    }
+    const m = flagGroup(items); total += m.length; missLine(id, m);
+    m.forEach(it=>{ it.els[1].textContent = "尚未作答，請在符合的選項填上分數"; });
+  });
+  const bpItems = (prefix,n,lbl)=>{ const out=[]; for(let i=1;i<=n;i++){ const nm=`${prefix}_${i}`;
+    out.push({ok:S[`${prefix}.${i}`]!==undefined, id:"bp-"+nm, label:`${lbl}第 ${i} 題`, els:[document.getElementById("bp-"+nm)]}); } return out; };
+  const m3 = flagGroup(bpItems("a1",25,"")); total += m3.length; missLine("miss3", m3);
+  const m4 = [...flagGroup(bpItems("a2h",10,"橫坐標")), ...flagGroup(bpItems("a2v",10,"縱坐標"))]; total += m4.length; missLine("miss4", m4);
+  let emptyCells = 0;
+  document.querySelectorAll("#otWrap button[data-a]").forEach(b=>{
+    const empty = !S[`pair.${b.dataset.a}-${b.dataset.b}`];
+    if (empty) emptyCells++;
+    b.classList.toggle("miss", checkMode && empty);
+  });
+  const startedGrid = Object.keys(S).some(k=>k.startsWith("pair."));
+  const showPri = PRI_LACK.length>0 && (checkMode || startedGrid);
+  const priMiss = showPri ? PRI_LACK.length : 0;
+  document.querySelectorAll(".ot .pri").forEach(el=>{
+    const empty = !(S[el.dataset.k]||"").toString().trim();
+    el.classList.toggle("miss", showPri && empty);
+  });
+  document.getElementById("rankNote").classList.toggle("miss", checkMode && emptyCells>0);
+  if (checkMode) total += emptyCells;
+  total += priMiss;
+  if (priMiss && !document.getElementById("priWarn").textContent) document.getElementById("priWarn").textContent = `最上方還沒填：${PRI_LACK.join("、")}（請選出最重要的三個動機，分別填 1、2、3）。`;
+  const KEYS = ["now","future","rank"];
+  const has = (id,k)=>!!S[`p6.${id}.${k}`];
+  let lastF=-1; FACETS.forEach((_,i)=>{ if(KEYS.some(k=>has(i+1,k))) lastF=i; });
+  const m6=[];
+  FACETS.forEach(([n],i)=>{ const id=i+1;
+    const ok = KEYS.every(k=>has(id,k));
+    const show = !ok && (checkMode || i<=lastF);
+    document.querySelector(`[data-lik="p6.${id}.now"]`).classList.toggle("miss", show && !has(id,"now"));
+    document.querySelector(`[data-lik="p6.${id}.future"]`).classList.toggle("miss", show && !has(id,"future"));
+    document.querySelector(`select[data-k="p6.${id}.rank"]`).classList.toggle("miss", show && !has(id,"rank"));
+    if (show) m6.push({id:"facet"+id, label:n});
+  });
+  total += m6.length; missLine("miss6", m6);
+  missTotal = total;
+  ["miss1","miss2","miss3","miss4",null,"miss6"].forEach((id,i)=>{
+    const bad = id ? document.getElementById(id).innerHTML!=="" : ((checkMode && emptyCells>0) || priMiss>0);
+    links[i].classList.toggle("miss", bad);
+  });
+}
+document.addEventListener("click", e=>{
+  const j = e.target.closest("[data-jump]"); if(!j) return;
+  const t = document.getElementById(j.dataset.jump);
+  t.scrollIntoView({block:"center"});
+  const f = t.querySelector("input,select"); if (f) f.focus({preventScroll:true});
+});
+function runCheck(){
+  checkMode = true; update();
+  const r = document.getElementById("checkResult");
+  if (missTotal===0){ r.className="good"; r.textContent="全部題目都已作答。"; toast("全部題目都已作答"); return; }
+  r.className="bad"; r.textContent=`還有 ${missTotal} 題未作答，紅字標示的就是。`;
+  toast(`還有 ${missTotal} 題未作答`);
+  const first = document.querySelector(".q.miss, .bp.miss, .ot .pri.miss, .ot button.miss, .lik.miss, select.miss");
+  if (first) first.scrollIntoView({block:"center"});
+}
+document.querySelectorAll("[data-act=check]").forEach(b=>b.addEventListener("click", runCheck));
+
+/* ---------- PDF report ---------- */
+const TYPE_INFO = {
+  D:{name:"掌控型",en:"Dominance",color:"#23848A",plus:["喜歡挑戰自己及他人","行動力強","結果導向","坦率","有自信"],minus:["缺乏耐性","不敏感"]},
+  I:{name:"影響型",en:"Influence",color:"#C8456A",plus:["熱情","行動強","善交際","健談","樂觀"],minus:["衝動","缺乏跟進"]},
+  S:{name:"穩健型",en:"Steadiness",color:"#3A63B8",plus:["沉著冷靜","有耐心","善於傾聽","重視和諧","謙遜"],minus:["過分遷就他人","不敢冒險"]},
+  C:{name:"嚴謹型",en:"Conscientiousness",color:"#B26F0E",plus:["精準","善於分析","重視數據","冷靜","安靜"],minus:["過於挑惕","過度分析"]}
+};
+const loadScript = src => new Promise((ok,bad)=>{ const s=document.createElement("script"); s.src=src; s.onload=ok; s.onerror=()=>bad(new Error("load")); document.head.appendChild(s); });
+async function ensureLibs(){
+  if (!window.html2canvas) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+  if (!window.jspdf) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+}
+const val = k => esc(String(S[k]??"").trim()) || `<span class="rp-empty">未填</span>`;
+const multi = k => { const t=String(S[k]??"").trim(); return t ? esc(t).replace(/\n/g,"<br>") : `<span class="rp-empty">未填</span>`; };
+
+function reportBlocks(){
+  const s1=discScore(1,10), s2=discScore(11,20), T={}; LETTERS.forEach(L=>T[L]=s1[L]+s2[L]);
+  const maxT = Math.max(...LETTERS.map(L=>T[L]));
+  const tops = maxT>0 ? LETTERS.filter(L=>T[L]===maxT) : [];
+  const B = [];
+  const today = new Date().toISOString().slice(0,10);
+
+  B.push(`<div class="rp-head"><h1>DISC 個人行為模式評量報告</h1>
+    <table class="rp-info"><tr><th>受測者</th><td>${val("p8.name")}</td><th>年齡</th><td>${val("p8.age")}</td></tr>
+    <tr><th>介紹人</th><td>${val("p8.ref")}</td><th>測驗日</th><td>${val("p8.date")}</td></tr></table>
+    ${missTotal>0?`<p class="rp-warn">這份報告產出時，還有 ${missTotal} 題未作答，分數僅供參考。</p>`:""}
+    <p class="rp-meta">報告產出日：${today}</p></div>`);
+
+  B.push(`<section><h2>行為模式（DISC）</h2>
+    <table class="rp-tbl rp-num"><thead><tr><th></th>${LETTERS.map(L=>`<th style="color:${TYPE_INFO[L].color}">${L}</th>`).join("")}</tr></thead><tbody>
+    <tr><td>行為模式（一）</td>${LETTERS.map(L=>`<td>${s1[L]}</td>`).join("")}</tr>
+    <tr><td>行為模式（二）</td>${LETTERS.map(L=>`<td>${s2[L]}</td>`).join("")}</tr>
+    <tr class="tot"><td>一、二頁合計</td>${LETTERS.map(L=>`<td>${T[L]}</td>`).join("")}</tr></tbody></table>
+    <div class="rp-bars">${LETTERS.map(L=>`<div class="bar"><span class="l" style="color:${TYPE_INFO[L].color}">${L}　${TYPE_INFO[L].name}</span><span class="track"><i style="width:${maxT?T[L]/maxT*100:0}%;background:${TYPE_INFO[L].color}"></i></span><b>${T[L]}</b></div>`).join("")}</div>
+    ${tops.length?`<div class="rp-types">${tops.map(L=>`<div class="rp-type" style="border-color:${TYPE_INFO[L].color}"><h3 style="color:${TYPE_INFO[L].color}">最高分：${L} ${TYPE_INFO[L].name} <small>${TYPE_INFO[L].en}</small></h3><p>特質：${TYPE_INFO[L].plus.join("、")}</p><p class="m">需留意：${TYPE_INFO[L].minus.join("、")}</p></div>`).join("")}</div>`:""}
+  </section>`);
+
+  // stage 1
+  const t1 = document.getElementById("apt1Total").textContent, d1 = bpVals("a1",25).filter(v=>v!==undefined).length;
+  const curve = document.querySelector(".curve").outerHTML;
+  B.push(`<section><h2>適性評量第一階段</h2>
+    <div class="rp-row"><p class="rp-big">總計 <b>${t1}</b> 分${d1<25?`<small>（已答 ${d1} / 25 題）</small>`:""}</p><div class="rp-curve">${curve}</div></div></section>`);
+
+  // stage 2
+  const map = document.querySelector(".map").cloneNode(true);
+  B.push(`<section><h2>適性評量第二階段</h2>
+    <p class="rp-line">橫坐標合計 <b>${document.getElementById("hSum").textContent}</b>　縱坐標合計 <b>${document.getElementById("vSum").textContent}</b>　座標 <b>${document.getElementById("coordText").textContent}</b></p>
+    <div class="rp-map">${map.outerHTML}</div></section>`);
+
+  // OUTCOME
+  const tally = OT_TALLY, placeOf = c => 1 + FACTORS.filter((_,j)=>tally[j+1]>c).length;
+  const pri = {}; FACTORS.forEach((_,i)=>{ const v=Number(S[`p5.pri.${i+1}`]); if([1,2,3].includes(v)) pri[v]=i+1; });
+  const doneOT = Object.keys(S).filter(k=>k.startsWith("pair.")).length;
+  const topCount = FACTORS.map(([n],i)=>({n,no:i+1,c:tally[i+1],p:placeOf(tally[i+1])})).filter(o=>doneOT===66 && o.c>0 && o.p<=3).sort((a,b)=>a.p-b.p||a.no-b.no);
+  B.push(`<section><h2>工作因子 OUTCOME 表</h2>
+    <div class="rp-two">
+      <div><h3>自己選的前三名</h3><ol class="rp-ol">${[1,2,3].map(n=>`<li><span>${n}</span>${pri[n]?`${pri[n]}　${FACTORS[pri[n]-1][0]}`:`<span class="rp-empty">未填</span>`}</li>`).join("")}</ol></div>
+      <div><h3>交叉比較統計的前三名</h3>${topCount.length?`<ol class="rp-ol">${topCount.map(o=>`<li><span>${o.p}</span>${o.no}　${o.n}<em>${o.c} 個</em></li>`).join("")}</ol>`:`<p class="rp-empty">交叉比較還有 ${66-doneOT} 格沒填，尚無統計結果。</p>`}</div>
+    </div>
+    <table class="rp-tbl rp-cnt"><tr>${FACTORS.map((_,i)=>`<th>${i+1}</th>`).join("")}</tr>
+      <tr>${FACTORS.map(([n])=>`<td class="nm">${n}</td>`).join("")}</tr>
+      <tr>${FACTORS.map((_,i)=>{ const top=topCount.some(o=>o.no===i+1); return `<td class="${top?"top":""}">${tally[i+1]}</td>`; }).join("")}</tr></table>
+  </section>`);
+
+  // facets
+  const lk = k => LIK[(S[k]||0)-1] || `<span class="rp-empty">未填</span>`;
+  B.push(`<section><h2>新圓夢思考模式</h2>
+    <table class="rp-tbl"><thead><tr><th>五大面向</th><th>現階段滿意度</th><th>未來理想期許</th><th>排序</th></tr></thead><tbody>
+    ${FACETS.map(([n],i)=>`<tr><td>${n}</td><td>${lk(`p6.${i+1}.now`)}</td><td>${lk(`p6.${i+1}.future`)}</td><td>${S[`p6.${i+1}.rank`]||`<span class="rp-empty">—</span>`}</td></tr>`).join("")}
+    </tbody></table>
+    <dl class="rp-dl"><dt>目前選擇工作的首要條件</dt><dd>${val("p6.first")}</dd><dt>為什麼</dt><dd>${multi("p6.why")}</dd>
+    <dt>現階段工作最滿意的點</dt><dd>${multi("p6.good")}</dd><dt>現階段工作不滿意的點</dt><dd>${multi("p6.bad")}</dd></dl></section>`);
+
+  // dreams
+  B.push(`<section><h2>我的夢想 &amp; 目標</h2>
+    <table class="rp-tbl rp-dream"><thead><tr><th>目標</th>${DREAM_COLS.map(([a,b])=>`<th>${a}<small>${b}</small></th>`).join("")}</tr></thead><tbody>
+    ${DREAM_ROWS.map((r,ri)=>`<tr><td class="rh">${r}</td>${DREAM_COLS.map((_,c)=>`<td>${multi(`p7.${ri+1}.${c+1}`)}</td>`).join("")}</tr>`).join("")}
+    </tbody></table></section>`);
+
+  // scorer
+  B.push(`<section><h2>計分者填寫</h2>
+    <table class="rp-info"><tr><th>外</th><td>${val("p8.out")}</td><th>潛力</th><td>${val("p8.potential")}</td></tr>
+    <tr><th>內</th><td>${val("p8.in")}</td><th>座標</th><td>${document.getElementById("coordText").textContent}</td></tr></table></section>`);
+  return B;
+}
+
+const PW=794, PH=1123, PAD=52, FOOT=36;
+async function buildPdfBlob(){
+  await ensureLibs();
+  try { await document.fonts.ready; } catch(e){}
+  const host = document.createElement("div"); host.id="rp-host"; document.body.appendChild(host);
+  const limit = PH - PAD*2 - FOOT;
+  try {
+    // measure blocks
+    const meas = document.createElement("div"); meas.className="rp-page"; meas.style.height="auto"; host.appendChild(meas);
+    const blocks = reportBlocks().map(html=>{ meas.innerHTML = `<div class="rp-blk">${html}</div>`; return {html, h: meas.firstChild.offsetHeight}; });
+    host.removeChild(meas);
+    // pack into pages
+    const pages=[]; let cur=[], used=0;
+    blocks.forEach(b=>{
+      if (cur.length && used + b.h > limit){ pages.push(cur); cur=[]; used=0; }
+      cur.push(b); used += b.h;
+    });
+    if (cur.length) pages.push(cur);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({unit:"pt", format:"a4", orientation:"portrait"});
+    const name = String(S["p8.name"]||"").trim();
+    for (let i=0;i<pages.length;i++){
+      const pg = document.createElement("div"); pg.className="rp-page";
+      const body = pages[i].map(b=>{
+        if (b.h > limit){ const sc = limit / b.h; return `<div class="rp-blk" style="height:${limit}px"><div style="transform:scale(${sc});transform-origin:top left;width:${(PW-PAD*2)/sc}px">${b.html}</div></div>`; }
+        return `<div class="rp-blk">${b.html}</div>`;
+      }).join("");
+      pg.innerHTML = `<div class="rp-body">${body}</div><div class="rp-foot"><span>DISC 個人行為模式評量報告${name?"　"+esc(name):""}</span><span>第 ${i+1} / ${pages.length} 頁</span></div>`;
+      host.appendChild(pg);
+      const canvas = await html2canvas(pg, {scale:2, backgroundColor:"#ffffff", useCORS:true, logging:false, width:PW, height:PH, windowWidth:PW});
+      if (i>0) pdf.addPage();
+      pdf.addImage(canvas.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 595.28, 841.89);
+      host.removeChild(pg);
+    }
+    return pdf.output("blob");
+  } finally { host.remove(); }
+}
+function reportName(){
+  const n = String(S["p8.name"]||"").trim().replace(/[\\/:*?"<>|]/g,"");
+  const d = (S["p8.date"]||new Date().toISOString().slice(0,10));
+  return `DISC評量報告${n?"_"+n:""}_${d}.pdf`;
+}
+let pdfBusy=false;
+async function makeReport(){
+  if (pdfBusy) return; pdfBusy=true;
+  const btns = document.querySelectorAll("[data-act=pdf]");
+  btns.forEach(b=>{ b.disabled=true; b.dataset.label=b.textContent; b.textContent="正在產生報告…"; });
+  try {
+    const downloads = (window.claude && window.claude.use) ? await window.claude.use("downloads") : null;
+    if (!downloads){ toast("這個畫面無法下載檔案，請在 claude.ai 開啟這個網頁"); return; }
+    const blob = await buildPdfBlob();
+    try { await downloads.save({filename: reportName(), data: blob}); toast("PDF 報告已下載"); }
+    catch(e){ toast(e && e.code==="declined" ? "已取消下載" : e && e.code==="rate_limited" ? "下載視窗已開啟，請先完成上一個" : "下載失敗，請再試一次"); }
+  } catch(e){
+    toast("報告產生失敗，請確認網路連線後再試一次");
+  } finally {
+    pdfBusy=false;
+    btns.forEach(b=>{ b.disabled=false; b.textContent=b.dataset.label; });
+  }
+}
+const pdfModal = document.getElementById("pdfModal");
+function askReport(){
+  checkMode = true; update();
+  if (missTotal>0){
+    document.getElementById("pdfMsg").textContent = `還有 ${missTotal} 題未作答，已用紅字標出。要先回去作答，還是直接下載報告？`;
+    pdfModal.classList.add("open"); document.getElementById("pdfBack").focus();
+  } else makeReport();
+}
+document.querySelectorAll("[data-act=pdf]").forEach(b=>b.addEventListener("click", askReport));
+document.getElementById("pdfBack").onclick=()=>{ pdfModal.classList.remove("open"); const f=document.querySelector(".q.miss, .bp.miss, .ot .pri.miss, .ot button.miss, .lik.miss, select.miss"); if(f) f.scrollIntoView({block:"center"}); };
+document.getElementById("pdfGo").onclick=()=>{ pdfModal.classList.remove("open"); makeReport(); };
+pdfModal.addEventListener("keydown",e=>{ if(e.key==="Escape") pdfModal.classList.remove("open"); });
+
+/* ---------- nav highlight ---------- */
+const io = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const a=links.find(l=>l.classList.contains("active")); if(a && window.innerWidth<=900) a.scrollIntoView({inline:"center",block:"nearest"}); } });
+},{rootMargin:"-30% 0px -60% 0px"});
+document.querySelectorAll(".part").forEach(p=>io.observe(p));
+
+/* ---------- sticky offset ---------- */
+function setStick(){ const r=document.querySelector(".rail"); document.documentElement.style.setProperty("--stick", (window.innerWidth<=900 ? r.offsetHeight : 0)+"px"); }
+window.addEventListener("resize", setStick); setStick();
+
+/* ---------- tools ---------- */
+let toastT;
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2200); }
+const bpText = (l,r,v) => v===undefined ? "未作答" : (v<2?l:r)+(v===0||v===3?"（強）":"（弱）");
+function summary(){
+  const L=[], s1=discScore(1,10), s2=discScore(11,20);
+  L.push("DISC 個人行為模式評量");
+  L.push(`受測者：${S["p8.name"]||""}　年齡：${S["p8.age"]||""}　介紹人：${S["p8.ref"]||""}　測驗日：${S["p8.date"]||""}`,"");
+  L.push("【行為模式 1–20 題】");
+  for(let n=1;n<=20;n++){ const parts=[]; for(let o=1;o<=4;o++){ const v=S[`disc.${n}.${o}`]; if(v) parts.push(`(${o}) ${v} 分`); } L.push(`${n}. ${parts.join("、")||"未作答"}`); }
+  L.push("","【DISC 分數】");
+  L.push(`行為模式（一）：D ${s1.D}　I ${s1.I}　S ${s1.S}　C ${s1.C}`);
+  L.push(`行為模式（二）：D ${s2.D}　I ${s2.I}　S ${s2.S}　C ${s2.C}`);
+  L.push(`一、二頁合計：D ${s1.D+s2.D}　I ${s1.I+s2.I}　S ${s1.S+s2.S}　C ${s1.C+s2.C}`);
+  L.push("","【適性評量第一階段】");
+  APT1.forEach(([l,r],i)=>L.push(`${i+1}. ${l}／${r}：${bpText(l,r,S[`a1.${i+1}`])}`));
+  L.push(`總計：${document.getElementById("apt1Total").textContent}`);
+  L.push("","【適性評量第二階段・橫坐標】");
+  APT2H.forEach(([l,r],i)=>L.push(`${l}／${r}：${bpText(l,r,S[`a2h.${i+1}`])}`));
+  L.push(`合計：${document.getElementById("hSum").textContent}`);
+  L.push("","【適性評量第二階段・縱坐標】");
+  APT2V.forEach(([l,r],i)=>L.push(`${l}／${r}：${bpText(l,r,S[`a2v.${i+1}`])}`));
+  L.push(`合計：${document.getElementById("vSum").textContent}`, `座標：${document.getElementById("coordText").textContent}`);
+  L.push("","【工作因子 OUTCOME 表】");
+  FACTORS.forEach(([n],i)=>L.push(`${i+1} ${n}：優先順序 ${S[`p5.pri.${i+1}`]||"—"}，表格出現 ${OT_TALLY[i+1]} 次`));
+  L.push("","【新圓夢思考模式】");
+  FACETS.forEach(([n],i)=>L.push(`${n}：現階段 ${LIK[(S[`p6.${i+1}.now`]||0)-1]||"—"}，未來期許 ${LIK[(S[`p6.${i+1}.future`]||0)-1]||"—"}，排序 ${S[`p6.${i+1}.rank`]||"—"}`));
+  L.push(`首要條件：${S["p6.first"]||""}`,`為什麼：${S["p6.why"]||""}`,`最滿意的點：${S["p6.good"]||""}`,`不滿意的點：${S["p6.bad"]||""}`);
+  L.push("","【我的夢想 & 目標】");
+  DREAM_ROWS.forEach((r,ri)=>{ L.push(r); DREAM_COLS.forEach(([a,b],c)=>L.push(`  ${a}（${b}）：${S[`p7.${ri+1}.${c+1}`]||""}`)); });
+  L.push("","【計分者填寫】",`外：${S["p8.out"]||""}　內：${S["p8.in"]||""}　潛力：${S["p8.potential"]||""}`);
+  return L.join("\n");
+}
+document.querySelectorAll("[data-act=copy]").forEach(b=>b.addEventListener("click", async()=>{
+  try { await navigator.clipboard.writeText(summary()); toast("已複製全部作答"); }
+  catch(e){ toast("無法複製，請改用瀏覽器的複製功能"); }
+}));
+const modal=document.getElementById("modal");
+document.querySelectorAll("[data-act=reset]").forEach(b=>b.addEventListener("click",()=>{ modal.classList.add("open"); document.getElementById("mNo").focus(); }));
+document.getElementById("mNo").onclick=()=>modal.classList.remove("open");
+document.getElementById("mYes").onclick=()=>{ S={}; checkMode=false; document.getElementById("checkResult").textContent=""; try{localStorage.removeItem(KEY);}catch(e){} hydrate(); update(); modal.classList.remove("open"); toast("已清除全部作答"); };
+modal.addEventListener("keydown",e=>{ if(e.key==="Escape") modal.classList.remove("open"); });
+
+hydrate(); update();
+</script>
+</body>
+</html>
